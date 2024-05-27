@@ -1,25 +1,10 @@
-import React, {useState} from 'react';
-import {Col, Container, Form, Row} from "react-bootstrap";
+import React, {useLayoutEffect, useState} from 'react';
+import {Button, Col, Container, Form, Row} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
-import * as PropTypes from "prop-types";
 
-
-function TextInput(props) {
-    return null;
-}
-
-TextInput.propTypes = {
-    onChange: PropTypes.func,
-    description: PropTypes.string,
-    label: PropTypes.string,
-    placeholder: PropTypes.string,
-    value: PropTypes.shape({})
-};
 
 function TextInputComponent () {
-    let StyleInput = {
-        borderRadius: '0px'
-    }
+
     const [value, setValue] = useState({})
     const navigate = useNavigate()
 
@@ -29,14 +14,31 @@ function TextInputComponent () {
 
 
     const handleChange = (event) => {
+        // Вообще так нельзя делать, так как я каждый раз делаю рендер переменных
+        let testInput = document.querySelector('.test_input');
+        let label = document.querySelector('.label');
+        let description = document.querySelector('.description');
+        let error = document.querySelector('.error');
+
         setValue((prevState) => ({
             ...prevState,
             [event.target.name]: event.target.value,
-            StyleInput :{
-                borderRadius: event.target.value.radius + "px"
+        } ) )
+        testInput.style.borderRadius = event.target.value+"px"
+        if(event.target.name == 'label') {
+            label.textContent = event.target.value
+        }
+        if(event.target.name == 'description') {
+            description.textContent = event.target.value
+        }
+        if(event.target.name == 'error') {
+            error.style.display = 'block';
+            error.textContent = event.target.value
+            if(event.target.value === '') {
+                error.style.display = 'none';
             }
-        }))
-        console.log(StyleInput)
+        }
+
     }
 
     return (
@@ -45,20 +47,32 @@ function TextInputComponent () {
                 <Container>
                     <Row >
                         <Col>
-                            <TextInput
-                                label="Input"
-                                description="Input description"
-                                placeholder="Input placeholder"
-                                value={value}
-                                onChange={(event) => setValue(event.currentTarget.value)}
-                            />
+                           <span
+                               className="label"
+                           >
+                           </span>
+                            <br/><p
+                            className="description"
+                            >
+                           </p>
+                            <br/>
                             <input
+                                className="test_input"
                                 type="text"
                                 placeholder={value.placeholder ? value.placeholder : "Edit Input"}
                                 size={value.size}
-                                style={StyleInput}
 
                             />
+                            <br/><p
+                            className="error"
+                            style={{
+                                display: 'none',
+                                color: 'red'
+                            }}
+                            >
+                            </p>
+                            <br/>
+                            <Button onClick={() => {handleNavigate("/")}}>Вернуться на главную страницу</Button>
                         </Col>
                         <Col>
                             <Form
@@ -96,7 +110,7 @@ function TextInputComponent () {
                                            name="radius"
                                            step="5"
                                            min={0}
-                                           max={50}
+                                           max={25}
                                            value={value.radius}
                                     />
                                     Size
