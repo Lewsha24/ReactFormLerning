@@ -8,7 +8,7 @@ import ErrorComponent from "./ErrorComponent";
 import Signin from "./Signin";
 import Signup from "./Signin";
 import TextInputComponent from "./TextInputComponent";
-
+// Быстрый роутер 
 const router = createBrowserRouter([
     {
         path: '/',
